@@ -32,6 +32,15 @@ namespace PhraseCryptApp
                 ["ModeWrite"] = "WRITE",
                 ["ModeRead"] = "READ",
 
+                // Launcher / channel
+                ["LauncherSubtitle"] = "Choose your channel",
+                ["ChannelStable"] = "STABLE",
+                ["ChannelAlpha"] = "ALPHA",
+                ["ChannelStableSubtitle"] = "Tested and approved",
+                ["ChannelAlphaSubtitle"] = "Experimental features, untested",
+                ["LauncherVersion"] = "Version {0}",
+                ["LauncherChannelSelected"] = "{0} channel selected",
+
                 // WRITE
                 ["LabelWordCount"] = "WORD COUNT",
                 ["LabelProtection"] = "PROTECTION (REQUIRED)",
@@ -104,6 +113,15 @@ namespace PhraseCryptApp
                 ["ModeWrite"] = "SCHREIBEN",
                 ["ModeRead"] = "LESEN",
 
+                // Launcher / channel
+                ["LauncherSubtitle"] = "Kanal wählen",
+                ["ChannelStable"] = "STABIL",
+                ["ChannelAlpha"] = "ALPHA",
+                ["ChannelStableSubtitle"] = "Getestet und freigegeben",
+                ["ChannelAlphaSubtitle"] = "Experimentelle Funktionen, ungetestet",
+                ["LauncherVersion"] = "Version {0}",
+                ["LauncherChannelSelected"] = "Kanal {0} ausgewählt",
+
                 ["LabelWordCount"] = "ANZAHL WÖRTER",
                 ["LabelProtection"] = "SCHUTZ (ERFORDERLICH)",
                 ["OptionAes"] = "AES-256-GCM (meldet ein falsches Passwort)",
@@ -171,6 +189,15 @@ namespace PhraseCryptApp
                 ["ThemeLabel"] = "ТЕМА",
                 ["ModeWrite"] = "ЗАПИСЬ",
                 ["ModeRead"] = "ЧТЕНИЕ",
+
+                // Launcher / channel
+                ["LauncherSubtitle"] = "Выберите канал",
+                ["ChannelStable"] = "СТАБИЛЬНАЯ",
+                ["ChannelAlpha"] = "АЛЬФА",
+                ["ChannelStableSubtitle"] = "Проверено и одобрено",
+                ["ChannelAlphaSubtitle"] = "Экспериментальные функции, непроверенные",
+                ["LauncherVersion"] = "Версия {0}",
+                ["LauncherChannelSelected"] = "Выбран канал: {0}",
 
                 ["LabelWordCount"] = "КОЛИЧЕСТВО СЛОВ",
                 ["LabelProtection"] = "ЗАЩИТА (ОБЯЗАТЕЛЬНО)",

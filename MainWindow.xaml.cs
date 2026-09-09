@@ -124,7 +124,22 @@ namespace PhraseCryptApp
             ExtractFromImageButton.Content = Localization.T("ButtonExtractImage");
 
             UpdateReadModeUi();
+            UpdateChannelBadge();
             SetStatus(Localization.T("StatusReady"), false);
+        }
+
+        // ================= Build channel =================
+
+        /// <summary>Reflects BuildChannel.Current in the header. Visual only - it
+        /// never gates crypto behavior, only the visibility of experimental UI.</summary>
+        private void UpdateChannelBadge()
+        {
+            bool isAlpha = BuildChannel.Current == ChannelKind.Alpha;
+
+            ChannelBadgeText.Text = isAlpha ? Localization.T("ChannelAlpha") : Localization.T("ChannelStable");
+
+            ChannelBadge.SetResourceReference(Border.BackgroundProperty, isAlpha ? "AccentDimBrush" : "PanelBorderBrush");
+            ChannelBadgeText.SetResourceReference(TextBlock.ForegroundProperty, isAlpha ? "AccentBrush" : "TextSecondaryBrush");
         }
 
         // ================= Mode switching =================
