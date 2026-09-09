@@ -6,10 +6,6 @@ them back to you **inside an encrypted container**.
 Built as a learning project to understand how BIP39, password-based encryption
 and honey encryption actually work.
 
-> **Do not use this for wallets holding real funds.** It is educational
-> software and has not been audited. Use established, audited tools for anything
-> that matters. Test networks and throwaway wallets are fine.
-
 ---
 
 ## The core idea
@@ -44,22 +40,6 @@ log, not in a temp file.
 
 ---
 
-## Getting it running
-
-**You need:** Windows, and [Visual Studio 2022](https://visualstudio.microsoft.com/)
-with the *.NET desktop development* workload (free Community edition works).
-
-1. Download or clone this repository.
-2. Add the BIP39 wordlist: download
-   [`english.txt`](https://github.com/bitcoin/bips/blob/master/bip-0039/english.txt)
-   and place it next to `PhraseCryptApp.csproj`. The app will not start without it.
-3. Open `PhraseCryptApp.csproj` in Visual Studio.
-4. Press **F5**.
-
-No NuGet packages, no external dependencies.
-
----
-
 ## Security model
 
 These rules are enforced in code, not just documented:
@@ -91,12 +71,6 @@ press Clear.
 official BIP39 test vectors and verifies the wordlist against the reference
 hash. Both must pass before anything can be generated or revealed.
 
-**Honest limitation:** the mnemonic itself is still handled as a .NET string in
-one place, because that is what the UI displays. Strings are immutable and
-cannot be reliably zeroed, so a revealed phrase may linger in managed memory
-until garbage collection. The operating system may also page memory to disk.
-These are constraints of the platform, not things this code works around.
-
 ---
 
 ## Verification
@@ -122,6 +96,22 @@ endings or trailing whitespace:
 ```
 187db04a869dd9bc7be80d21a86497d692c0db6abd3aa8cb6be5d618ff757fae
 ```
+
+---
+
+## Getting it running
+
+**You need:** Windows, and [Visual Studio 2022](https://visualstudio.microsoft.com/)
+with the *.NET desktop development* workload (free Community edition works).
+
+1. Download or clone this repository.
+2. Add the BIP39 wordlist: download
+   [`english.txt`](https://github.com/bitcoin/bips/blob/master/bip-0039/english.txt)
+   and place it next to `PhraseCryptApp.csproj`. The app will not start without it.
+3. Open `PhraseCryptApp.csproj` in Visual Studio.
+4. Press **F5**.
+
+No NuGet packages, no external dependencies.
 
 ---
 
@@ -161,7 +151,7 @@ is there: **no authentication tag, no HMAC, no plaintext checksum.** Any of thos
 would tell an attacker when a guess was correct and defeat the whole scheme.
 Decryption therefore never reports "wrong password" — it cannot, and must not.
 
-**Its limit:** this defends against offline guessing. If the attacker can check
+**Scope:** this defends against offline guessing. If the attacker can check
 candidates externally — for example by looking up each generated phrase on a
 blockchain to see whether it holds funds — they will still find the real one. It
 raises the cost of an attack; it does not replace a strong password.
@@ -180,14 +170,13 @@ decryption tries the current work factor first and falls back to the legacy one
 if authentication fails. Honey containers have no authentication by design, so
 the work factor is recorded in a version byte instead.
 
-**Argon2id would be stronger.** PBKDF2 is not memory-hard and is therefore the
-weakest of the modern options against GPU attacks; OWASP's first choice is
-Argon2id at 19 MiB memory, 2 iterations, parallelism 1. It is deliberately not
-used here because it would require a third-party package, and pulling an
-external dependency into the trusted core of a security tool carries its own
-risk. If you want it, that is a well-defined contribution: add the package, bump
-the honey version byte to 3, and keep the PBKDF2 path for reading old
-containers.
+Argon2id would be stronger — OWASP's first choice, at 19 MiB memory, 2
+iterations, parallelism 1, and memory-hard against GPU attacks in a way PBKDF2
+is not. It is deliberately not used here because it would require a third-party
+package, and pulling an external dependency into the trusted core of a security
+tool carries its own risk. If you want it, that is a well-defined contribution:
+add the package, bump the honey version byte to 3, and keep the PBKDF2 path for
+reading old containers.
 
 ### Steganography
 
@@ -195,6 +184,24 @@ containers.
 green and blue value in a PNG. Changing the lowest bit shifts a colour by 1/255 —
 invisible to the eye. Output is always PNG, because JPEG recompresses the pixels
 and would destroy the hidden bits.
+
+---
+
+## Limitations
+
+**Not audited.** This is educational software, built to learn how these
+techniques work, not a reviewed or audited security product. It's a good fit
+for test networks and throwaway wallets; use established, audited tools for
+wallets holding real funds.
+
+**The mnemonic passes through a .NET string once**, at the point where the UI
+displays it, because that's what a `TextBlock` takes. Strings are immutable and
+cannot be reliably zeroed, so a revealed phrase may linger in managed memory
+until garbage collection runs. The operating system may also page memory to
+disk. These are constraints of the .NET platform, not something this code
+works around — everything upstream of that point (entropy, key material,
+passwords) is handled as wipeable byte arrays and zeroed explicitly, per the
+security model above.
 
 ---
 
